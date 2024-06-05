@@ -163,7 +163,7 @@
                     $totalPriceSubmits = $project->priceSubmits->where('status', 1)->sum('final_price');
                     $profit = $totalPriceSubmits - $totalPriceDevelopers;
                     $percentageProfit = $totalPriceSubmits != 0 ? ($profit / $totalPriceSubmits) * 100 : 0;
-    $percentageProfitFormatted = $percentageProfit == floor($percentageProfit) ? number_format($percentageProfit, 0, ',', '.') : number_format($percentageProfit, 2, ',', '.');
+                    $percentageProfitFormatted = $percentageProfit == floor($percentageProfit) ? number_format($percentageProfit, 0, ',', '.') : number_format($percentageProfit, 2, ',', '.');
                     $paidDevelopers = $project->priceDevelopers->where('status', 1)->sum('paid');
                     $paidProjects = $project->paidProjects->where('status', 1)->sum('nominal_pembayaran');
                     $remnantDevelopers = $project->priceDevelopers->where('status', 1)->sum('remnant');
@@ -217,12 +217,12 @@
                     @if($project->status_id != 5)
                       <td class="align-items-center text-center text-nowrap p-1"><input readonly style="min-width: 200px; width: 100%;" type="text" class="form-control" name="total_estimasi" value="{{ $total }}" required></td>
                     @else
-                      <td class="align-items-center text-center text-nowrap p-1"><input readonly style="min-width: 200px; width: 100%;" type="text" class="form-control" name="total_estimasi_yang_tidak_terhitung" value="{{ $total }}" required></td>
+                      <td class="align-items-center text-center text-nowrap p-1"><input readonly style="min-width: 200px; width: 100%;" type="text" class="form-control" name="total_estimasi_yang_tidak_terhitung" value="" required></td>
                     @endif
                     @if($project->status_id == 3 || $project->status_id == 4)
                       <td class="align-items-center text-center text-nowrap p-1"><input readonly style="min-width: 200px; width: 100%;" type="text" class="form-control" name="total" value="{{ $total }}" required></td>
                     @else
-                      <td class="align-items-center text-center text-nowrap p-1"><input readonly style="min-width: 200px; width: 100%;" type="text" class="form-control" name="total_yang_tidak_terhitung" value="{{ $total }}" required></td>
+                      <td class="align-items-center text-center text-nowrap p-1"><input readonly style="min-width: 200px; width: 100%;" type="text" class="form-control" name="total_yang_tidak_terhitung" value="" required></td>
                     @endif
                     <td class="align-items-center text-nowrap">
                       @if(auth()->user()->hasPermission('price-submit-index'))
