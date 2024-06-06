@@ -19,7 +19,21 @@ class KasbonController extends Controller
 
     public function index(Request $request){
         if ($request->id == null) {
-            $kasbons = Kasbon::with('karyawan')->where('status', 1)->get();
+            $searchKaryawan = $request->input('karyawan_id');
+            $searchTanggal = $request->input('tanggal');
+
+            $kasbons = Kasbon::with('karyawan')
+                ->where('status', 1);
+
+            if ($searchKaryawan) {
+                $kasbons = $kasbons->where('karyawan_id', $searchKaryawan);
+            }
+
+            if ($searchTanggal) {
+                $kasbons = $kasbons->whereDate('tanggal', $searchTanggal);
+            }
+
+            $kasbons = $kasbons->get();
             $users = User::where('status', 1)->get();
             return view('pages.kasbon.index', compact(
                 'request',

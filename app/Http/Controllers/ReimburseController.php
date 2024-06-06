@@ -21,7 +21,21 @@ class ReimburseController extends Controller
 
     public function index(Request $request){
         if ($request->id == null) {
-            $reimburses = Reimburse::with('file', 'file.attachments')->where('status', 1)->get();
+            $searchKaryawan = $request->input('karyawan_id');
+            $searchTanggal = $request->input('tanggal');
+    
+            $reimburses = Reimburse::with('file', 'file.attachments')
+                ->where('status', 1);
+
+            if ($searchKaryawan) {
+                $reimburses = $reimburses->where('karyawan_id', $searchKaryawan);
+            }
+
+            if ($searchTanggal) {
+                $reimburses = $reimburses->whereDate('tanggal', $searchTanggal);
+            }
+
+            $reimburses = $reimburses->get();
             $users = User::where('status', 1)->get();
             return view('pages.reimburse.index', compact(
                 'request',
