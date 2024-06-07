@@ -16,7 +16,7 @@
   <div class="col-md-3">
     <div class="card">
       <div class="card-body">
-        <div>Total Esatimasi</div>
+        <div>Total Estimasi</div>
         <h5 class="text-primary mb-0" id="summaryPenjumlahanTotalEstimasi"></h5>
         <div>
           <i class="fas fa-check text-success"></i>
