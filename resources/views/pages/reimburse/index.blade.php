@@ -21,12 +21,14 @@
         <div class="float-left">
           <form id="" action="{{ route('reimburse.index') }}" method="GET">
             <div class="input-group">
-              <select class="form-control select3" style="width: 200px !important;" name="karyawan_id">
-                <option disabled selected value="">Karyawan</option>
-                @foreach($users as $user)
-                  <option value="{{ $user->id }}" @if($user->id == $request->karyawan_id) selected @endif>{{ $user->name }}</option>
-                @endforeach
-              </select>
+              @if($request->id == null)
+                <select class="form-control select3" style="width: 200px !important;" name="karyawan_id">
+                  <option disabled selected value="">Karyawan</option>
+                  @foreach($users as $user)
+                    <option value="{{ $user->id }}" @if($user->id == $request->karyawan_id) selected @endif>{{ $user->name }}</option>
+                  @endforeach
+                </select>
+              @endif
               <input type="date" class="form-control" placeholder="Tanggal" name="tanggal" id="" value="{{ $request->tanggal }}">
               <button type="submit" class="btn btn-icon btn-primary"><i class="fas fa-search"></i></button>
             </div>
