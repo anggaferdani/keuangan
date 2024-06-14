@@ -57,6 +57,7 @@ Route::middleware(['auth:web', 'disableBackButton'])->group(function(){
     Route::resource('/project', ProjectController::class);
     Route::get('/price-submit/{id}/delete', [PriceSubmitController::class, 'destroy'])->name('price-submit.delete');
     Route::resource('/price-submit', PriceSubmitController::class);
+    Route::put('/price-developer/{id}/paid/update', [PriceDeveloperController::class, 'paid'])->name('price-developer.paid.update');
     Route::get('/price-developer/{id}/delete', [PriceDeveloperController::class, 'destroy'])->name('price-developer.delete');
     Route::resource('/price-developer', PriceDeveloperController::class);
     Route::get('/paid-project/{id}/delete', [PaidProjectController::class, 'destroy'])->name('paid-project.delete');

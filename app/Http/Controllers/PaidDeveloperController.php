@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\File;
+use App\Models\Project;
 use App\Models\Attachment;
 use Illuminate\Http\Request;
 use App\Models\PaidDeveloper;
@@ -75,7 +76,17 @@ class PaidDeveloperController extends Controller
             'file_id' => $file->id,
         ];
 
-        PaidDeveloper::create($array);
+        $paidDeveloper = PaidDeveloper::create($array);
+
+        $priceDeveloper = PriceDeveloper::where('id', $paidDeveloper->price_developer_id)->first();
+        $project = Project::with('priceDevelopers')->where('id', $priceDeveloper->project_id)->first();
+
+        
+        $arrayProject = [
+            'paid' => $priceDeveloper->paidDevelopers->where('status', 1)->sum('nominal_pembayaran'),
+        ];
+
+        $project->update($arrayProject);
 
         return back()->with('success', 'Success');
     }
@@ -128,6 +139,16 @@ class PaidDeveloperController extends Controller
 
         $paidDeveloper->update($array);
 
+        $priceDeveloper = PriceDeveloper::where('id', $paidDeveloper->price_developer_id)->first();
+        $project = Project::with('priceDevelopers')->where('id', $priceDeveloper->project_id)->first();
+
+        
+        $arrayProject = [
+            'paid' => $priceDeveloper->paidDevelopers->where('status', 1)->sum('nominal_pembayaran'),
+        ];
+
+        $project->update($arrayProject);
+
         return back()->with('success', 'Success');
     }
 
@@ -137,6 +158,16 @@ class PaidDeveloperController extends Controller
         $paidDeveloper->update([
             'status' => 0,
         ]);
+
+        $priceDeveloper = PriceDeveloper::where('id', $paidDeveloper->price_developer_id)->first();
+        $project = Project::with('priceDevelopers')->where('id', $priceDeveloper->project_id)->first();
+
+        
+        $arrayProject = [
+            'paid' => $priceDeveloper->paidDevelopers->where('status', 1)->sum('nominal_pembayaran'),
+        ];
+
+        $project->update($arrayProject);
 
         return back()->with('success', 'Success');
     }

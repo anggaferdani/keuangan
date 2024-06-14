@@ -136,4 +136,23 @@ class PriceDeveloperController extends Controller
 
         return back()->with('success', 'Success');
     }
+
+    public function paid(Request $request, $id){
+        $priceDeveloper = PriceDeveloper::find($id);
+        
+        $request->validate([
+            'paid' => 'required',
+        ]);
+
+        $paid = preg_replace('/\D/', '', $request->paid);
+        $paid = trim($paid);
+
+        $array = [
+            'paid' => $paid,
+        ];
+
+        $priceDeveloper->update($array);
+
+        return back()->with('success', 'Success');
+    }
 }
