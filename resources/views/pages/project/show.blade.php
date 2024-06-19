@@ -21,6 +21,7 @@
       $totalPriceSubmits = $project->priceSubmits->where('status', 1)->sum('final_price');
       $profit = $totalPriceSubmits - $totalPriceDevelopers;
       $percentageProfit = $totalPriceSubmits != 0 ? ($profit / $totalPriceSubmits) * 100 : 0;
+      $percentageProfitFormatted = $percentageProfit == floor($percentageProfit) ? number_format($percentageProfit, 0, ',', '.') : number_format($percentageProfit, 2, ',', '.');
       $paidDevelopers = $project->priceDevelopers->where('status', 1)->sum('paid');
       $paidProjects = $project->paidProjects->where('status', 1)->sum('nominal_pembayaran');
       $remnantDevelopers = $project->priceDevelopers->where('status', 1)->sum('remnant');
@@ -94,7 +95,7 @@
             </tr>
             <tr>
               <td style="width: 40%;">Persentase Profit</td>
-              <td>{{ $percentageProfit }}</td>
+              <td>{{ $percentageProfitFormatted }}</td>
             </tr>
             <tr>
               <td style="width: 40%;">Paid Developer</td>

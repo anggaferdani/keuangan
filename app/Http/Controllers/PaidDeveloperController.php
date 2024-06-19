@@ -81,6 +81,13 @@ class PaidDeveloperController extends Controller
         $priceDeveloper = PriceDeveloper::where('id', $paidDeveloper->price_developer_id)->first();
         $project = Project::with('priceDevelopers')->where('id', $priceDeveloper->project_id)->first();
 
+        $arrayPriceDeveloper = [
+            'paid' => $priceDeveloper->paidDevelopers->where('status', 1)->sum('nominal_pembayaran'),
+            'remnant' => $priceDeveloper->final_price - $priceDeveloper->paidDevelopers->where('status', 1)->sum('nominal_pembayaran'),
+        ];
+
+        $priceDeveloper->update($arrayPriceDeveloper);
+
         $arrayProject = [
             'paid' => $priceDeveloper->paidDevelopers->where('status', 1)->sum('nominal_pembayaran'),
         ];
@@ -141,7 +148,13 @@ class PaidDeveloperController extends Controller
         $priceDeveloper = PriceDeveloper::where('id', $paidDeveloper->price_developer_id)->first();
         $project = Project::with('priceDevelopers')->where('id', $priceDeveloper->project_id)->first();
 
-        
+        $arrayPriceDeveloper = [
+            'paid' => $priceDeveloper->paidDevelopers->where('status', 1)->sum('nominal_pembayaran'),
+            'remnant' => $priceDeveloper->final_price - $priceDeveloper->paidDevelopers->where('status', 1)->sum('nominal_pembayaran'),
+        ];
+
+        $priceDeveloper->update($arrayPriceDeveloper);
+
         $arrayProject = [
             'paid' => $priceDeveloper->paidDevelopers->where('status', 1)->sum('nominal_pembayaran'),
         ];
@@ -160,6 +173,13 @@ class PaidDeveloperController extends Controller
 
         $priceDeveloper = PriceDeveloper::where('id', $paidDeveloper->price_developer_id)->first();
         $project = Project::with('priceDevelopers')->where('id', $priceDeveloper->project_id)->first();
+
+        $arrayPriceDeveloper = [
+            'paid' => $priceDeveloper->paidDevelopers->where('status', 1)->sum('nominal_pembayaran'),
+            'remnant' => $priceDeveloper->final_price - $priceDeveloper->paidDevelopers->where('status', 1)->sum('nominal_pembayaran'),
+        ];
+
+        $priceDeveloper->update($arrayPriceDeveloper);
         
         $arrayProject = [
             'paid' => $priceDeveloper->paidDevelopers->where('status', 1)->sum('nominal_pembayaran'),

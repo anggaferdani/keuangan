@@ -162,11 +162,12 @@
                     $totalPriceDevelopers = $project->priceDevelopers->where('status', 1)->sum('final_price');
                     $totalPriceSubmits = $project->priceSubmits->where('status', 1)->sum('final_price');
                     $profit = $totalPriceSubmits - $totalPriceDevelopers;
+                    $profit = max($profit, 0);
                     $percentageProfit = $totalPriceSubmits != 0 ? ($profit / $totalPriceSubmits) * 100 : 0;
                     $percentageProfitFormatted = $percentageProfit == floor($percentageProfit) ? number_format($percentageProfit, 0, ',', '.') : number_format($percentageProfit, 2, ',', '.');
                     $paidDevelopers = $project->priceDevelopers->where('status', 1)->sum('paid');
                     $paidProjects = $project->paidProjects->where('status', 1)->sum('nominal_pembayaran');
-                    $remnantDevelopers = $project->priceDevelopers->where('status', 1)->sum('final_price') - $paidProjects;
+                    $remnantDevelopers = $project->priceDevelopers->where('status', 1)->sum('remnant');
                     $remnantProjects =  $totalPriceSubmits - $paidProjects;
                     $total = $remnantProjects - $remnantDevelopers;
                   @endphp
