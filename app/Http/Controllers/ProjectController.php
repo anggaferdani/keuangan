@@ -24,8 +24,16 @@ class ProjectController extends Controller
         $statuses = Status::whereNot('status', 0)->get();
         $clients = Client::where('status', 1)->get();
         $endUsers = EndUser::where('status', 1)->get();
-        $projects = Project::with('statusBelongsTo', 'priceSubmits')->where('status', 1)->get();
-        $projectCount = Project::where('status', 1)->count();
+        
+        $projectsQuery = Project::with('statusBelongsTo', 'priceSubmits')->where('status', 1);
+        
+        if ($request->has('status_id') && $request->status_id != null) {
+            $projectsQuery->where('status_id', $request->status_id);
+        }
+        
+        $projects = $projectsQuery->get();
+        $projectCount = $projectsQuery->count();
+        
         $users = User::with(['karyawan' => function($query) {
             $query->where('status', 1)
                   ->with('gajis', 'reimburses', 'kasbons', 'tunjanganHariRayas');
@@ -40,6 +48,7 @@ class ProjectController extends Controller
             'projects',
             'projectCount',
             'users',
+            'request',
         ));
     }
 

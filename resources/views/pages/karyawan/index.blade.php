@@ -7,17 +7,19 @@
 @php
   use Carbon\Carbon;
 
-  $totalGaji = 0;
+  $totalSisaGaji = 0;
+  $totalSeluruhGaji = 0;
   $totalKasbon = 0;
   $totalReimburse = 0;
   $currentYear = Carbon::now()->year;
 
   foreach ($users as $user) {
-      $totalGaji += $user->karyawan->gajis->where('status', 1)
+      $totalSisaGaji += $user->karyawan->gajis->where('status', 1)
                     ->filter(function($gaji) use ($currentYear) {
                       return Carbon::parse($gaji->tanggal)->year == $currentYear;
                     })
                     ->sum('sisa');
+      $totalSeluruhGaji += $user->karyawan->nominal_gaji * 12;
       $totalKasbon += $user->karyawan->kasbons->where('status', 1)
                     ->filter(function($gaji) use ($currentYear) {
                       return Carbon::parse($gaji->tanggal)->year == $currentYear;
@@ -35,7 +37,10 @@
     <div class="card">
       <div class="card-body">
         <div>Total Gaji {{ now()->year }}</div>
-        <h5 class="text-primary">{{ 'Rp. '.number_format($totalGaji) }}</h5>
+        <h5 class="text-primary mb-0">{{ 'Rp. '.number_format($totalSisaGaji) }}</h5>
+        <div>
+          <span class="text-danger">{{ 'Rp. '.number_format($totalSeluruhGaji) }}</span>
+        </div>
       </div>
     </div>
   </div>

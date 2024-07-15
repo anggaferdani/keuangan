@@ -4,12 +4,23 @@
 <h1>Project</h1>
 @endsection
 @section('content')
+@php
+  use Carbon\Carbon;
+
+  $totalSeluruhGaji = 0;
+  foreach ($users as $user) {
+      $totalSeluruhGaji += $user->karyawan->nominal_gaji * 12;
+  }
+@endphp
 <div class="row text-center">
   <div class="col-md-3">
     <div class="card">
       <div class="card-body">
         <div>Total Gaji {{ now()->year }}</div>
-        <h5 class="text-primary" id="summaryTotalGaji"></h5>
+        <h5 class="text-primary mb-0" id="summaryTotalGaji"></h5>
+        <div>
+          <span class="text-danger">{{ 'Rp. '.number_format($totalSeluruhGaji) }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -59,7 +70,20 @@
     <div class="card">
       <div class="card-body">
         <div class="float-left">
-          
+          <form id="" action="{{ route('project.index') }}" method="GET">
+            <div class="form-group">
+              @if($request->id == null)
+              <select class="form-control select3" style="width: 200px !important;" name="status_id">
+                <option disabled selected value="">Status</option>
+                @foreach($statuses as $status)
+                  <option value="{{ $status->id }}" @if($status->id == $request->status_id) selected @endif>{{ $status->name }}</option>
+                @endforeach
+              </select>
+              @endif
+              <button type="submit" class="btn btn-icon btn-primary"><i class="fas fa-search"></i></button>
+              <a href="{{ route('project.index') }}" class="btn btn-icon btn-danger"><i class="fas fa-times"></i></a>
+            </div>
+          </form>
         </div>
         <div class="float-right">
         </div>
@@ -269,8 +293,6 @@
               </tr>
               <tr>
                 @php
-                  use Carbon\Carbon;
-
                   $totalGaji = 0;
                   $currentYear = Carbon::now()->year;
 
@@ -385,7 +407,7 @@
     });
 
     function formatCurrencyAndFinalPrice(input) {
-      input.value = formatter.format(input.value.replace(/[^\d]/g, '')).replace(',00', '');
+      input.value = formatter.format(input.value.replace(/[^\d-]/g, '')).replace(',00', '');
       updateFinalPrice(input);
     }
 
@@ -393,10 +415,10 @@
       const parentRow = input.closest('tr');
       const totalPaidProjectInput = parentRow.querySelector('.form-control[name="paid_project"]');
 
-      const estimasiKekurangan = parseFloat(totalEstimasiInput.value.replace(/[^\d]/g, '') || 0) - parseFloat(totalEstimasiGajiInput.value.replace(/[^\d]/g, '') || 0);
+      const estimasiKekurangan = parseFloat(totalEstimasiInput.value.replace(/[^\d-]/g, '') || 0) - parseFloat(totalEstimasiGajiInput.value.replace(/[^\d-]/g, '') || 0);
       totalEstimasiKekuranganInput.value = formatter.format(estimasiKekurangan).replace(',00', '');
 
-      const kekurangan = parseFloat(totalPriceInput.value.replace(/[^\d]/g, '') || 0) - parseFloat(totalGajiInput.value.replace(/[^\d]/g, '') || 0);
+      const kekurangan = parseFloat(totalPriceInput.value.replace(/[^\d-]/g, '') || 0) - parseFloat(totalGajiInput.value.replace(/[^\d-]/g, '') || 0);
       totalKekuranganInput.value = formatter.format(kekurangan).replace(',00', '');
 
       updateTotal();
@@ -406,7 +428,7 @@
       let totalPriceDeveloper = 0;
       priceDeveloperInputs.forEach((input, index) => {
         if (index > 0) {
-          totalPriceDeveloper += parseFloat(input.value.replace(/[^\d]/g, '') || 0);
+          totalPriceDeveloper += parseFloat(input.value.replace(/[^\d-]/g, '') || 0);
         }
       });
       totalPriceDeveloperInput.value = formatter.format(totalPriceDeveloper).replace(',00', '');
@@ -414,7 +436,7 @@
       let totalPriceSubmit = 0;
       priceSubmitInputs.forEach((input, index) => {
         if (index > 0) {
-          totalPriceSubmit += parseFloat(input.value.replace(/[^\d]/g, '') || 0);
+          totalPriceSubmit += parseFloat(input.value.replace(/[^\d-]/g, '') || 0);
         }
       });
       totalPriceSubmitInput.value = formatter.format(totalPriceSubmit).replace(',00', '');
@@ -422,7 +444,7 @@
       let totalProfit = 0;
       profitInputs.forEach((input, index) => {
         if (index > 0) {
-          totalProfit += parseFloat(input.value.replace(/[^\d]/g, '') || 0);
+          totalProfit += parseFloat(input.value.replace(/[^\d-]/g, '') || 0);
         }
       });
       totalProfitInput.value = formatter.format(totalProfit).replace(',00', '');
@@ -430,7 +452,7 @@
       let totalPriceDeal = 0;
       priceDealInputs.forEach((input, index) => {
         if (index > 0) {
-          totalPriceDeal += parseFloat(input.value.replace(/[^\d]/g, '') || 0);
+          totalPriceDeal += parseFloat(input.value.replace(/[^\d-]/g, '') || 0);
         }
       });
       totalPriceDealInput.value = formatter.format(totalPriceDeal).replace(',00', '');
@@ -438,7 +460,7 @@
       let totalRealProfit = 0;
       realProfitInputs.forEach((input, index) => {
         if (index > 0) {
-          totalRealProfit += parseFloat(input.value.replace(/[^\d]/g, '') || 0);
+          totalRealProfit += parseFloat(input.value.replace(/[^\d-]/g, '') || 0);
         }
       });
       totalRealProfitInput.value = formatter.format(totalRealProfit).replace(',00', '');
@@ -446,7 +468,7 @@
       let totalPaidDeveloper = 0;
       paidDeveloperInputs.forEach((input, index) => {
         if (index > 0) {
-          totalPaidDeveloper += parseFloat(input.value.replace(/[^\d]/g, '') || 0);
+          totalPaidDeveloper += parseFloat(input.value.replace(/[^\d-]/g, '') || 0);
         }
       });
       totalPaidDeveloperInput.value = formatter.format(totalPaidDeveloper).replace(',00', '');
@@ -454,7 +476,7 @@
       let totalPaidProject = 0;
       paidProjectInputs.forEach((input, index) => {
         if (index > 0) {
-          totalPaidProject += parseFloat(input.value.replace(/[^\d]/g, '') || 0);
+          totalPaidProject += parseFloat(input.value.replace(/[^\d-]/g, '') || 0);
         }
       });
       totalPaidProjectInput.value = formatter.format(totalPaidProject).replace(',00', '');
@@ -462,7 +484,7 @@
       let totalRemnantDeveloper = 0;
       remnantDeveloperInputs.forEach((input, index) => {
         if (index > 0) {
-          totalRemnantDeveloper += parseFloat(input.value.replace(/[^\d]/g, '') || 0);
+          totalRemnantDeveloper += parseFloat(input.value.replace(/[^\d-]/g, '') || 0);
         }
       });
       totalRemnantDeveloperInput.value = formatter.format(totalRemnantDeveloper).replace(',00', '');
@@ -470,7 +492,7 @@
       let totalRemnantProject = 0;
       remnantProjectInputs.forEach((input, index) => {
         if (index > 0) {
-          totalRemnantProject += parseFloat(input.value.replace(/[^\d]/g, '') || 0);
+          totalRemnantProject += parseFloat(input.value.replace(/[^\d-]/g, '') || 0);
         }
       });
       totalRemnantProjectInput.value = formatter.format(totalRemnantProject).replace(',00', '');
@@ -478,7 +500,7 @@
       let totalEstimasi = 0;
       totalEstimasiInputs.forEach((input, index) => {
         if (index > 0) {
-          totalEstimasi += parseFloat(input.value.replace(/[^\d]/g, '') || 0);
+          totalEstimasi += parseFloat(input.value.replace(/[^\d-]/g, '') || 0);
         }
       });
       totalEstimasiInput.value = formatter.format(totalEstimasi).replace(',00', '');
@@ -486,15 +508,15 @@
       let totalPrice = 0;
       totalInputs.forEach((input, index) => {
         if (index > 0) {
-          totalPrice += parseFloat(input.value.replace(/[^\d]/g, '') || 0);
+          totalPrice += parseFloat(input.value.replace(/[^\d-]/g, '') || 0);
         }
       });
       totalPriceInput.value = formatter.format(totalPrice).replace(',00', '');
 
-      let totalEstimasiGaji = parseFloat(totalEstimasiGajiInput.value.replace(/[^\d]/g, '') || 0);
+      let totalEstimasiGaji = parseFloat(totalEstimasiGajiInput.value.replace(/[^\d-]/g, '') || 0);
       totalEstimasiGajiInput.value = formatter.format(totalEstimasiGaji).replace(',00', '');
 
-      let totalGaji = parseFloat(totalGajiInput.value.replace(/[^\d]/g, '') || 0);
+      let totalGaji = parseFloat(totalGajiInput.value.replace(/[^\d-]/g, '') || 0);
       totalGajiInput.value = formatter.format(totalGaji).replace(',00', '');
 
       let totalEstimasiKekurangan = parseFloat(totalEstimasiKekuranganInput.value.replace(/[^\d-]/g, '') || 0);
