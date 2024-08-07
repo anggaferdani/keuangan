@@ -40,6 +40,10 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function jobdesks(){
+        return $this->hasMany(Jobdesk::class);
+    }
+
     public function role(){
         return $this->belongsTo(Role::class, 'role_id');
     }

@@ -73,12 +73,12 @@
           <form id="" action="{{ route('project.index') }}" method="GET">
             <div class="form-group">
               @if($request->id == null)
-              <select class="form-control select3" style="width: 200px !important;" name="status_id">
-                <option disabled selected value="">Status</option>
-                @foreach($statuses as $status)
-                  <option value="{{ $status->id }}" @if($status->id == $request->status_id) selected @endif>{{ $status->name }}</option>
-                @endforeach
-              </select>
+                <select class="form-control select3" style="width: 200px !important;" name="status_id">
+                  <option disabled selected value="">Status</option>
+                  @foreach($statuses as $status)
+                    <option value="{{ $status->id }}" @if($status->id == $request->status_id) selected @endif>{{ $status->name }}</option>
+                  @endforeach
+                </select>
               @endif
               <button type="submit" class="btn btn-icon btn-primary"><i class="fas fa-search"></i></button>
               <a href="{{ route('project.index') }}" class="btn btn-icon btn-danger"><i class="fas fa-times"></i></a>

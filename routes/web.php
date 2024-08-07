@@ -10,6 +10,7 @@ use App\Http\Controllers\EndUserController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\JobdeskController;
 use App\Http\Controllers\ReimburseController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PaidProjectController;
@@ -44,6 +45,10 @@ Route::middleware(['auth:web', 'disableBackButton'])->group(function(){
     Route::resource('/role', RoleController::class);
     Route::resource('/permission', PermissionController::class);
     Route::resource('/karyawan', KaryawanController::class);
+
+    Route::get('/jobdesk/karyawan', [JobdeskController::class, 'karyawan'])->name('jobdesk.karyawan');
+    Route::resource('/jobdesk', JobdeskController::class);
+
     Route::get('/gaji/{id}/delete', [GajiController::class, 'destroy'])->name('gaji.delete');
     Route::resource('/gaji', GajiController::class);
     Route::get('/thr/{id}/delete', [TunjanganHariRayaController::class, 'destroy'])->name('thr.delete');

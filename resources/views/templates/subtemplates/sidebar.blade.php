@@ -34,14 +34,17 @@
       @endif
       @if(auth()->user()->hasPermission('kasbon-index'))
         <li class="{{ Route::is('kasbon.*') && !Request::get('id') ? 'active' : '' }}">
-          <a class="nav-link" href="{{ route('kasbon.index') }}"><i class="fas fa-lock"></i><span>Kasbons</span></a>
+          <a class="nav-link" href="{{ route('kasbon.index') }}"><i class="fas fa-coins"></i><span>Kasbons</span></a>
         </li>
       @endif
       @if(auth()->user()->hasPermission('reimburse-index'))
         <li class="{{ Route::is('reimburse.*') && !Request::get('id') ? 'active' : '' }}">
-          <a class="nav-link" href="{{ route('reimburse.index') }}"><i class="fas fa-lock"></i><span>Reimburses</span></a>
+          <a class="nav-link" href="{{ route('reimburse.index') }}"><i class="fas fa-coins"></i><span>Reimburses</span></a>
         </li>
       @endif
+      <li class="{{ Route::is('jobdesk.*') && !Request::get('id') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('jobdesk.karyawan') }}"><i class="fas fa-sync"></i><span>Jobdesk</span></a>
+      </li>
     </ul>
   </aside>
 </div>
